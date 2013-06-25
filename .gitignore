@@ -16,3 +16,8 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+# others
+INSTALLATION/*.exe
+config.yml
+results/*.html

@@ -1,0 +1,9 @@
+# BASIC CONFIGURATION FILE FOR THE PMB SCRAPER
+
+# how to access the PMB instance
+base_url: http://the-url-to/the-pm-instance/
+username: admin
+password: xxxxxx
+
+# make sure this directory exists
+result_dir: ./results

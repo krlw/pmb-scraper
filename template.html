@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+  <head>
+    <title>
+      PMB SCRAPER RESULT
+    </title>
+    
+    <style type="text/css">
+      body {
+        font-family: Verdana, Arial, sans-serif;
+      }
+      h2, p, code {
+        width: 800px;
+      }
+      p.code {
+        font-family: Courier, monospace;
+      }
+      .request {
+        border-bottom: 1px solid grey;
+        padding-bottom: 15px;
+      }
+      #overlay {
+        font-size: 70%;
+        max-width: 250px;
+        position: fixed;
+        z-index: 3;
+        top: 0px;
+        right: 0px;
+        padding: 15px;
+        border: 1px solid black;
+        background-color: lightgrey;
+      }
+      #toggle-sql {
+        margin-right: 10px;
+      }
+      #directory {
+        border-top: 1px solid black;
+        margin-top: 5px;
+        padding-top: 5px;
+      }
+      #directory a {
+        display: block;
+        margin-top: 10px;
+      }
+      table {
+        border-collapse:collapse;
+      }
+      table, th, td {
+        border: 1px solid lightgrey;
+      }
+      th, td {
+        padding: 3px;
+      }
+      button {
+        margin-bottom: 10px;
+      }
+    </style>
+    
+    <script type="text/javascript">
+      function toggleSql(clicker) {
+        var sql_elems = document.getElementsByClassName('sql')
+        if (sql_elems[0].hidden == false) {
+          for (var i = 0; i < sql_elems.length; ++i) {
+            var item = sql_elems[i];  
+            item.hidden = true;
+          }
+          clicker.innerHTML = 'show sql';
+        } else {
+          for (var i = 0; i < sql_elems.length; ++i) {
+            var item = sql_elems[i];  
+            item.hidden = false;
+          }
+          clicker.innerHTML = 'hide sql';
+        }        
+      }
+      function toggleOverlay(clicker) {
+        var dir_div = document.getElementById('directory');
+        var sql_link = document.getElementById('toggle-sql');
+        if (dir_div.hidden == false) {
+          dir_div.hidden = true;
+          sql_link.hidden = true;
+          clicker.innerHTML='show';
+        } else {
+          dir_div.hidden = false;
+          sql_link.hidden = false;
+          clicker.innerHTML='hide this';
+        }
+      }
+      function markNextTable(clicker) {
+        // http://stackoverflow.com/questions/2044616/select-a-complete-table-with-javascript-to-be-copied-to-clipboard
+        el = clicker.nextSibling;
+        var body = document.body, range, sel;
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            try {
+                range.selectNodeContents(el);
+                sel.addRange(range);
+            } catch (e) {
+                range.selectNode(el);
+                sel.addRange(range);
+            }
+        } else if (body.createTextRange) {
+            range = body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+        }
+      }
+      function createTableSelectButtons() {
+        tables = document.getElementsByTagName('table');
+        for (var i = 0; i < tables.length; ++i) {
+          // create new button
+          var button = document.createElement('button');
+          button.setAttribute('type','button');
+          button.setAttribute('onclick','markNextTable(this)');
+          var button_text = document.createTextNode('Select Table');
+          button.appendChild(button_text);
+          document.body.appendChild(button);
+
+          table = tables[i];
+          table.parentNode.insertBefore(button, table);
+        }
+      }        
+    </script>
+  </head>
+<body onload = createTableSelectButtons()>
+
+<div id = 'overlay'>
+  <a href = '#' id = 'toggle-sql' onclick = "toggleSql(this)">hide sql</a>
+  <a href = '#' id = 'toggle-overlay' onclick = "toggleOverlay(this)">hide this</a>  
+  <div id = 'directory'>
+  </div>
+</div>
+
+<div id = 'content'>
+</div>
+
+</body>
+</html>
