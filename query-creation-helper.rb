@@ -53,7 +53,7 @@ puts ".. base_hash: #{base_hash}"
 puts ".. reading #{queries_csv}"
 query_array = []
 CSV.read(queries_csv,{:headers => true}).each do |row|
-  query_array << {'id_proc' => row[0].to_s.strip}
+  query_array << {'id_proc' => row[0].to_s.strip} unless row[0].to_s.strip.empty?
 end
 
 puts query_array
