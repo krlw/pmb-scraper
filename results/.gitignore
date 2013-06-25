@@ -1,0 +1,6 @@
+# Ignore everything in this directory
+# we don't want results to be uploaded
+# and we keep the folder in git
+*
+# Except this file
+!.gitignore
