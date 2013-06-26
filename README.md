@@ -12,9 +12,11 @@ from the PMB library software and integrates them into one HTML document.
 
 ### Install the Ruby language
 
-* Download and install the rubyinstaller from http://rubyinstaller.org/downloads/
-* follow the instructions on screen and set the following setting
-  // TODO
+* Download and install the rubyinstaller (version 1.9.3) from http://rubyinstaller.org/downloads/
+* follow the instructions on screen and select all of the following settings:
+    * Install Tcl/Tk support
+    * Add Ruby executables to your PATH
+    * Associate .rb and .rbw files with your Ruby installation
 
 ### Install neccesary libraries
 
