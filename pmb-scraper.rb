@@ -153,7 +153,11 @@ begin
     directory_link.content = query_header.text
     directory_link['href'] = '#' + request_div_id
 
-    directory_div.add_child(directory_link)
+    directory_link_p = Nokogiri::XML::Node.new('p', template)
+    directory_link_p['class'] = 'shown_request'
+
+    directory_link_p.add_child(directory_link)
+    directory_div.add_child(directory_link_p)
   end
 
   # logout

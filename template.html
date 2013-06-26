@@ -12,6 +12,10 @@
       h2, p, code {
         width: 800px;
       }
+      a {
+        text-decoration: none;
+        color: blue;
+      }
       h2 {
         margin-top: 0;
       }
@@ -42,9 +46,12 @@
         margin-top: 5px;
         padding-top: 5px;
       }
-      #directory a {
-        display: block;
+      #directory p {
         margin-top: 10px;
+        width: auto;
+      }
+      .toggle-request {
+        margin-right: 5px;
       }
       table {
         border-collapse:collapse;
@@ -57,6 +64,24 @@
       }
       button {
         margin-bottom: 10px;
+      }
+      p.hidden_request a {
+        color: darkblue;
+      }
+      p.hidden_request a:visited {
+        color: darkblue;
+      }
+      p.hidden_request a:hover {
+        color: darkblue;
+      }
+      p.shown_request a {
+        color: blue;
+      }
+      p.shown_request a:visited {
+        color: blue;
+      }
+      p.shown_request a:hover {
+        color: blue;
       }
     </style>
     
@@ -152,9 +177,46 @@
         }
       }
 
+      function createHideRequestLinks() {
+        var dir_div = document.getElementById('directory');
+        var request_links = dir_div.getElementsByTagName('p');
+        for (var i = 0; i < request_links.length; ++i) {
+          var hide_link = document.createElement('a');
+          
+          hide_link.setAttribute('href','#');
+          hide_link.setAttribute('onclick', 'hideRequest(this)');
+          hide_link.setAttribute('class','toggle-request');
+          
+          var hide_link_text = document.createTextNode('hide');
+          hide_link.appendChild(hide_link_text);
+          
+          request_link = request_links[i];
+          request_link.insertBefore(hide_link,request_link.firstChild);
+        }
+      }
+
+      function hideRequest(clicker) {
+        var request_link = clicker.nextSibling;
+        var request_id = request_link.getAttribute('href').substr(1);
+        if (clicker.innerHTML == 'hide') {
+          clicker.innerHTML = 'show';
+          request = document.getElementById(request_id);
+          request.hidden = true;
+          clicker.parentNode.classList.add('hidden_request');
+          clicker.parentNode.classList.remove('shown_request');
+        } else {
+          clicker.innerHTML = 'hide';
+          request = document.getElementById(request_id);
+          request.hidden = false;
+          clicker.parentNode.classList.add('shown_request');
+          clicker.parentNode.classList.remove('hidden_request');
+        }
+      }
+
       function onloadActions() {
         createButtonBeforeTable('Select whole Request', 'markRequest(this)');
-        createButtonBeforeTable('Select Table', 'markNextTable(this)');       
+        createButtonBeforeTable('Select Table', 'markNextTable(this)');
+        createHideRequestLinks();  
       }      
     </script>
   </head>
