@@ -12,12 +12,16 @@
       h2, p, code {
         width: 800px;
       }
+      h2 {
+        margin-top: 0;
+      }
       p.code {
         font-family: Courier, monospace;
       }
       .request {
         border-bottom: 1px solid grey;
         padding-bottom: 15px;
+        margin-bottom: 15px;
       }
       #overlay {
         font-size: 70%;
@@ -57,6 +61,7 @@
     </style>
     
     <script type="text/javascript">
+      
       function toggleSql(clicker) {
         var sql_elems = document.getElementsByClassName('sql')
         if (sql_elems[0].hidden == false) {
@@ -73,6 +78,7 @@
           clicker.innerHTML = 'hide sql';
         }        
       }
+      
       function toggleOverlay(clicker) {
         var dir_div = document.getElementById('directory');
         var sql_link = document.getElementById('toggle-sql');
@@ -86,6 +92,7 @@
           clicker.innerHTML='hide this';
         }
       }
+      
       function markNextTable(clicker) {
         // http://stackoverflow.com/questions/2044616/select-a-complete-table-with-javascript-to-be-copied-to-clipboard
         el = clicker.nextSibling;
@@ -107,24 +114,51 @@
             range.select();
         }
       }
-      function createTableSelectButtons() {
+
+      function markRequest(clicker) {
+        el = clicker.parentNode;
+        var body = document.body, range, sel;
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            try {
+                range.selectNodeContents(el);
+                sel.addRange(range);
+            } catch (e) {
+                range.selectNode(el);
+                sel.addRange(range);
+            }
+        } else if (body.createTextRange) {
+            range = body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+        }
+      }
+      
+      function createButtonBeforeTable(caption, call) {
         tables = document.getElementsByTagName('table');
         for (var i = 0; i < tables.length; ++i) {
           // create new button
           var button = document.createElement('button');
-          button.setAttribute('type','button');
-          button.setAttribute('onclick','markNextTable(this)');
-          var button_text = document.createTextNode('Select Table');
+          button.setAttribute('type', 'button');
+          button.setAttribute('onclick', call);
+          var button_text = document.createTextNode(caption);
           button.appendChild(button_text);
           document.body.appendChild(button);
 
           table = tables[i];
           table.parentNode.insertBefore(button, table);
         }
-      }        
+      }
+
+      function onloadActions() {
+        createButtonBeforeTable('Select whole Request', 'markRequest(this)');
+        createButtonBeforeTable('Select Table', 'markNextTable(this)');       
+      }      
     </script>
   </head>
-<body onload = createTableSelectButtons()>
+<body onload = onloadActions()>
 
 <div id = 'overlay'>
   <a href = '#' id = 'toggle-sql' onclick = "toggleSql(this)">hide sql</a>
