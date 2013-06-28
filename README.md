@@ -9,7 +9,7 @@ from the PMB library software and integrates them into one HTML document.
 
 ### Download the pmb-scraper
 
-* Download the repository as a zip (top left)
+* Download the repository as a zip - click __Download ZIP__
 * Extract the folder to some place with write access (e.g. Desktop)
 
 
