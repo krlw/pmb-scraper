@@ -1,6 +1,6 @@
 # pmb-scraper
 
-The pmb scraper crawls a predefined selection of preprogrammed queries
+The pmb scraper downloads a predefined selection of preprogrammed queries
 from the PMB library software and integrates them into one HTML document.
 
   
@@ -24,7 +24,7 @@ from the PMB library software and integrates them into one HTML document.
 
 ### Install neccesary libraries
 
-* Doubleclick `INSTALLATION/Install-Libraries.bat`
+* Doubleclick _INSTALLATION/install-libraries.bat_
   and wait until the process finishes
 
 
@@ -33,8 +33,8 @@ from the PMB library software and integrates them into one HTML document.
 
 ### Access to your PMB instance
 
-* Rename the file `config.yml.dist` to `config.yml`
-* open the `config.yml` in a Text Editor
+* Rename the file _config.yml.dist_ to _config.yml_
+* open the _config.yml_ in a Text Editor
 * fill in your details of your PMB instance:
 
 ```
@@ -59,23 +59,23 @@ result_dir: ./results   <--.
 
 The basic workflow for using the pmb-scraper looks like this:
 
-1. Select and note the query ids in the first row of the queries.csv
-2. run query-creation-helper.rb to find neccesary query parameters
-3. fill in these parameters into the queries.csv
-4. run the pmb-scraper.rb and create the resulting report
+1. Select and note the query ids in the first row of the _queries.csv_
+2. run _query-creation-helper.rb_ to find neccesary query parameters
+3. fill in these parameters into the _queries.csv_
+4. run the _pmb-scraper.rb_ and create the resulting report
 
 The following lines will explain these steps in detail.
 
 
-### How it works / the role of queries.csv
+### How it works / the role of _queries.csv_
 
 The pmb scraper basically requests all queries which are noted together
-with their neccesary parameters in the file queries.csv. CSV files are tables,
+with their neccesary parameters in the file _queries.csv_. CSV files are tables,
 which can easily be edited with text editors or tools like Excel or Calc.
 CSV means comma seperated, therefore table cells are seperated by a comma,
 rows are seperated by a newline.
 
-One column in queries.csv describes one query done in PMB, a column must
+One column in _queries.csv_ describes one query done in PMB, a column must
 include the id of the query (id_proc) and all neccesary parameters
 (dates, section or whatever) and their values in a form that looks like:
 ```
@@ -94,40 +94,40 @@ http://192.168.1.1/opac_ccf/edit.php?categ=procs&sub=&action=execute&id_proc=70
 
 
 and want to run the query with these parameters 
-* Statuts qui autorisent le prêt : _Accès Libre_ and _Animation_
-* Date de début de prêt : du ... : _01/01/2012_
-* Au ... : _31/12/2012_
+* Statuts qui autorisent le prêt : __Accès Libre__ and __Animation__
+* Date de début de prêt : du ... : __01/01/2012__
+* Au ... : __31/12/2012__
 
-our resulting queries.csv should look like this:
+our resulting _queries.csv_ should look like this:
 
 ```
 proc_id,parameter,value,parameter,value,...,...
 70 , Du , 2012-01-01 , Au , 2012-12-31 , statuts[] , 2 , statuts[] , 7
 ```
   
-It should be noted that the Dates given must be in the form of YYYY-MM-DD.
+__It should be noted that the Dates given must be in the form of YYYY-MM-DD.__
 
-But to create this request within the queries.csv seems rather complicated.
-It gets easier with the help of the query-creation-helper.rb, which takes all
+But to create this request within the _queries.csv_ seems rather complicated.
+It gets easier with the help of the _query-creation-helper.rb_, which takes all
 the query ids and helps with the configuration of their query parameters.
 
 
-### Configuring queries.csv with the help of query-creation-helper.rb
+### Configuring _queries.csv_ with the help of _query-creation-helper.rb_
 
 The query creation helper only reads the proc_ids from the firsts row of the
-queries.csv. It then visits all the given pages and outputs all avaible
+_queries.csv_. It then visits all the given pages and outputs all avaible
 parameters and, if possible, the values. It notes, when a parameter can take
 multiple values. For each query it also takes the parameters and values found
 and creates an example line.
 
-Therefore it makes sense to start with a queries.csv which only includes the ids
+Therefore it makes sense to start with a _queries.csv_ which only includes the ids
 and for our example would look like this:
 ```
 proc_id,parameter,value,parameter,value,...,...
 70 
 ```
 
-If we now run the query-creation-helper.rb the output helps us to parameterize
+If we now run the _query-creation-helper.rb_ the output helps us to parameterize
 the query:
 
 ```
@@ -160,21 +160,22 @@ Nombre d'exemplaires - empruntables mais pas empruntés entre ... et ...
 If we at the same time open the browser at the site of the query we can deduct
 the names of the parameters and their meaning, that:
 
-* _Date de début de prêt : du ..._ should be noted as _Du_
-* _Au ..._ should be noted as _Au_
-* _Statuts qui autorisent le prêt_ should be noted as _statuts[]_
+* __Date de début de prêt : du ...__ should be noted as __Du__
+* __Au ...__ should be noted as __Au__
+* __Statuts qui autorisent le prêt__ should be noted as __statuts[]__
 
-The parameters _Du_ and _Au_ want a date as their parameter.
+The parameters __Du__ and __Au__ want a date as their parameter.
 As said before, they must be noted in the form YYYY-MM-DD.
 If we want to explore the year 2012
-the value given for _Du_ should be _2012-01-01_, and
-the value for _Au_ should be _2012-12-31_.
-Our line so far in queries.csv therefore should look like:
+the value given for __Du__ should be __2012-01-01__, and
+the value for __Au__ should be __2012-12-31__.
+
+Our line so far in _queries.csv_ therefore should look like:
 ```
 70 , Du , 2012-01-01 , Au , 2012-12-31 
 ```
 
-Also in the output of the query-creation-helper.rb we can see the lines
+Also in the output of the _query-creation-helper.rb_ we can see the lines
 ```
 .. Mechanize::Form::MultiSelectList
    (selection of multiple values is possible)
@@ -188,20 +189,21 @@ Also in the output of the query-creation-helper.rb we can see the lines
      3 -> Pilon
      5 -> Reliure
 ```
-First of all that means that the values for the parameter _statuts[]_
+
+First of all that means that the values for the parameter __statuts[]__
 must be a number from 1 to 7. The corresponding meaning of these numbers is also
 clearly visible.
 The output also tells that multiple values can be selected.
 This can be noted by repeating the parameter name with different values.
-If we, for example are interested to inquiry the two categories 'Accès libre' (2)
-and 'Animation' (7) we would add
+If we, for example are interested to inquiry the two categories __'Accès libre' (2)__
+and __'Animation' (7)__ we would add
 ```
 statuts[] , 2 , statuts[] , 7
 ```
 to our line.
 
-Finally, the complete row within queries.csv, which closely looks like the example
-line from the output of query-creation-helper.rb, should look like that:
+Finally, the complete row within _queries.csv_, which closely looks similar to the example
+line from the output of _query-creation-helper.rb_, should look like that:
 ```
 proc_id,parameter,value,parameter,value,...,...
 70 , Du , 2012-01-01 , Au , 2012-12-31 , statuts[] , 2 , statuts[] , 7
@@ -210,16 +212,25 @@ proc_id,parameter,value,parameter,value,...,...
 This procedure should be repeated for all the queries which you want to be
 included in your report - it really sounds more complicated than it is!
 
-If all the wanted queries are collected it's time to let pmb-scraper.rb
+Note also that if you leave a row one line to the right in _queries.csv_ it will
+be ignored by the _query-creation-helper.rb_ and the _pmb-scraper.rb_.
+This can easily acived in _queries.csv_, if you add a comma before the line, like so:
+```
+proc_id,parameter,value,parameter,value,...,...
+,70 , Du , 2012-01-01 , Au , 2012-12-31 , statuts[] , 2 , statuts[] , 7
+```
+
+If all the wanted queries are collected it's time to let _pmb-scraper.rb_
 collect these queries and merge them within a single report.
 
-### Executing the pmb-scraper.rb
+
+### Executing the _pmb-scraper.rb_
 
 Executing the pmb-scraper to generate the report is as easy as executing
-pmb-scraper.rb. This programm then collects all queries noted in queries.csv
-and accumulates their results as well formatted HTML-document in the results folder.
+_pmb-scraper.rb_. The programm then collects all queries noted in _queries.csv_
+and accumulates their results as a well formatted HTML-document in the results folder.
 
-In out example only one row is existing within queries.csv. The output of a
+In out example only one row is existing within _queries.csv_. The output of a
 successful run of queries.csv would then look like this:
 
 ```
@@ -253,12 +264,12 @@ date and time in the results folder.
 If the program fails just after `LOGGING IN AS ...`:
 * the network connection is bad, can you access your PMB instance in the browser?
     * maybe just try to run the program again 
-* the details in config.yml are wrong:
+* the details in _config.yml_ are wrong:
     * Is the url to your PMB instance correct?
     * Are the login credentials correct?
 
 If the program fails to retrieve the _first_ Query it might be that your forgot
-the trailing slash (/) setting the base_url in your config.yml, it should look like:
+the trailing slash (/) setting for `base_url` in your _config.yml_, it should look like
 ```
 base_url: http://192.168.1.1/opac_ccf/
 ```
