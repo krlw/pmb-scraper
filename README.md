@@ -89,8 +89,9 @@ http://192.168.1.1/opac_ccf/edit.php?categ=procs&sub=&action=execute&id_proc=70
                                                                          |
                                                             the id of the query
 ```
+![Query in Browser Screenshot](https://raw.github.com/krlw/pmb-scraper/master/INSTALLATION/screenshot-proc-70-for-readme.jpg)
 
-// TODO show screenshot
+
 
 and want to run the query with these parameters 
 * Statuts qui autorisent le prêt : _Accès Libre_ and _Animation_
